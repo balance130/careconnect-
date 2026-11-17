@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B5D5B">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>CareConnect — курьер</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2040%2040%22%3E%3Crect%20width%3D%2240%22%20height%3D%2240%22%20rx%3D%2212%22%20fill%3D%22%230B5D5B%22/%3E%3Cpath%20d%3D%22M13%2017.5c0-5.2%203.1-8.5%207-8.5s7%203.3%207%208.5%22%20fill%3D%22none%22%20stroke%3D%22%239FF0DF%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M9.5%2019h21l-2.4%2010.6a2.4%202.4%200%200%201-2.3%201.9H14.2a2.4%202.4%200%200%201-2.3-1.9z%22%20fill%3D%22%23fff%22/%3E%3Crect%20x%3D%227.5%22%20y%3D%2216%22%20width%3D%2225%22%20height%3D%224.4%22%20rx%3D%222.2%22%20fill%3D%22%23FF5A3C%22/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4F7F6;--card:#fff;--ink:#11201F;--mut:#5C6D6B;--line:#DFE7E5;--main:#0B5D5B;--main2:#0F7471;--acc:#FF5A3C;--ok:#1E9E5A;--warn:#E8A100;--bad:#D63A2A;--tile:#EDF4F2}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.45 Manrope,system-ui,sans-serif;min-height:100vh;min-height:100dvh}
+body.lock{overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;touch-action:manipulation;border:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.w{max-width:640px;margin:0 auto;padding:0 16px}
+[hidden]{display:none!important}
+
+/* login */
+.login{min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:24px 16px;background:linear-gradient(160deg,var(--main),#073D3C)}
+.lbox{background:#fff;border-radius:28px;padding:28px 22px;width:min(400px,100%);box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:22px;letter-spacing:-.03em;color:var(--main);margin-bottom:6px}
+.brand em{font-style:normal;color:var(--acc)}
+.brand small{display:block;font-size:13px;letter-spacing:0;color:var(--mut);font-weight:600}
+.lbox p{color:var(--mut);margin:0 0 18px;font-size:15px}
+label{display:grid;gap:5px;font-weight:600;font-size:14px;margin-bottom:12px}
+input,select,textarea{width:100%;padding:14px 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);font-size:16px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;border-radius:14px;padding:0 16px;font-weight:800;font-size:16px;width:100%;text-decoration:none}
+.btn.main{background:var(--main);color:#fff}
+.btn.acc{background:var(--acc);color:#fff}
+.btn.ok{background:var(--ok);color:#fff}
+.btn.ghost{background:var(--tile);color:var(--ink)}
+.btn.line{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+.btn.bad{background:#fff;border:1.5px solid #F2C3BC;color:var(--bad)}
+.btn:active{transform:scale(.98)}
+.btn[disabled]{opacity:.55}
+.err{color:var(--bad);font-size:14px;min-height:1.2em;margin:4px 0 8px;font-weight:600}
+.hint{font-size:13px;color:var(--mut);margin-top:12px;text-align:center}
+
+/* top */
+.top{position:sticky;top:0;z-index:10;background:var(--main);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 0 0}
+.tbar{display:flex;align-items:center;gap:10px;min-height:52px}
+.who{flex:1;min-width:0}
+.who b{display:block;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who span{font-size:13px;color:#BFE3DD}
+.ic{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.12);color:#fff;display:grid;place-items:center;flex:none}
+.shift{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border-radius:999px;padding:0 6px 0 14px;min-height:44px;font-weight:700;font-size:14px;color:#fff}
+.sw{width:44px;height:26px;border-radius:99px;background:rgba(255,255,255,.3);position:relative;transition:background .2s}
+.sw:after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s}
+.shift.on .sw{background:#3DDC84}
+.shift.on .sw:after{transform:translateX(18px)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 0}
+.st{background:rgba(255,255,255,.1);border-radius:14px;padding:10px 12px}
+.st b{display:block;font-size:20px;letter-spacing:-.02em}
+.st span{font-size:12px;color:#BFE3DD}
+.tabs{display:flex;gap:4px;background:var(--bg);border-radius:18px 18px 0 0;padding:10px 12px 0;margin:0 -16px}
+.tab{flex:1;min-height:44px;border-radius:12px 12px 0 0;background:none;font-weight:700;color:var(--mut);position:relative}
+.tab[aria-selected="true"]{color:var(--ink);background:#fff}
+.tab i{font-style:normal;display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:99px;background:var(--acc);color:#fff;font-size:12px;margin-left:6px;padding:0 6px}
+.tab i:empty{display:none}
+
+main{padding:12px 0 calc(28px + env(safe-area-inset-bottom))}
+.off{background:#FFF6E0;border:1px solid #F4DDA0;border-radius:16px;padding:14px 16px;margin-bottom:12px;font-size:15px}
+.list{display:grid;gap:10px}
+.oc{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;display:grid;gap:10px;text-align:left;width:100%}
+.oc.new{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc) inset}
+.oh{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.num{font-weight:800;font-size:18px;letter-spacing:-.02em}
+.pill{font-size:12px;font-weight:800;border-radius:99px;padding:4px 10px;white-space:nowrap}
+.p-new{background:#FFE6DF;color:#C2391E}.p-taken{background:#E2F0FF;color:#1D5FB0}.p-picked{background:#EDE6FF;color:#5B3BB0}
+.p-way{background:#FFF1CC;color:#8A5E00}.p-done{background:#DDF5E7;color:#13703F}.p-fail{background:#FDE2DE;color:#A52618}
+.addr{font-weight:700;font-size:17px;line-height:1.3}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--mut);font-size:14px}
+.meta b{color:var(--ink)}
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:20px;padding:36px 20px;text-align:center;color:var(--mut)}
+.empty b{display:block;font-size:40px;margin-bottom:6px}
+.refresh{display:flex;justify-content:space-between;align-items:center;color:var(--mut);font-size:13px;margin:0 2px 10px}
+.refresh button{background:none;color:var(--main);font-weight:700;min-height:40px;padding:0 4px}
+
+/* sheet */
+.shade{position:fixed;inset:0;background:rgba(5,20,20,.5);opacity:0;pointer-events:none;transition:opacity .2s;z-index:30}
+.sheet{position:fixed;left:0;right:0;bottom:0;top:0;z-index:31;background:var(--bg);transform:translateY(100%);transition:transform .28s,visibility 0s .28s;visibility:hidden;display:flex;flex-direction:column;max-width:640px;margin:0 auto}
+body.lock .shade{opacity:1;pointer-events:auto}
+body.lock .sheet{transform:none;visibility:visible;transition:transform .28s}
+.sh{display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top)) 16px 10px;background:#fff;border-bottom:1px solid var(--line)}
+.sh h2{flex:1;margin:0;font-size:20px;letter-spacing:-.02em}
+.x{width:44px;height:44px;border-radius:50%;background:var(--tile);font-size:22px;flex:none}
+.sb{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:14px 16px 16px;display:grid;gap:12px;align-content:start}
+.sf{padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);display:grid;gap:8px}
+.box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px}
+.box h3{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.steps{display:flex;gap:4px;margin-top:2px}
+.steps span{flex:1;height:6px;border-radius:99px;background:var(--line)}
+.steps span.on{background:var(--main2)}
+.stepl{display:flex;justify-content:space-between;font-size:11px;color:var(--mut);margin-top:6px}
+.it{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.it:last-child{border-bottom:0}
+.it input{width:26px;height:26px;flex:none;accent-color:var(--ok);margin:0}
+.it span{flex:1}
+.it small{color:var(--mut)}
+.it b{white-space:nowrap}
+.it.got span{text-decoration:line-through;color:var(--mut)}
+.sum{display:flex;justify-content:space-between;padding:4px 0;color:var(--mut)}
+.sum.big{color:var(--ink);font-weight:800;font-size:18px}
+.paid{display:flex;align-items:center;gap:10px;border-radius:14px;padding:12px 14px;font-weight:700}
+.paid.y{background:#DDF5E7;color:#13703F}.paid.n{background:#FFF1CC;color:#8A5E00}
+.note{background:#FFF8E6;border-radius:12px;padding:10px 12px;font-size:15px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:var(--ink);color:#fff;border-radius:12px;padding:12px 16px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:.2s;z-index:50;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.hist{font-size:13px;color:var(--mut);display:grid;gap:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- Вход -->
+<section class="login" id="loginView">
+<div class="lbox" id="loginForm">
+<div class="brand"><svg width="44" height="44" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="12" fill="#0B5D5B"/><path d="M13 17.5c0-5.2 3.1-8.5 7-8.5s7 3.3 7 8.5" fill="none" stroke="#9FF0DF" stroke-width="2.6" stroke-linecap="round"/><path d="M9.5 19h21l-2.4 10.6a2.4 2.4 0 0 1-2.3 1.9H14.2a2.4 2.4 0 0 1-2.3-1.9z" fill="#fff"/><rect x="7.5" y="16" width="25" height="4.4" rx="2.2" fill="#FF5A3C"/><path d="M20 23.6c-1.2-1.5-3.7-1-3.7 1 0 1.8 3.7 4 3.7 4s3.7-2.2 3.7-4c0-2-2.5-2.5-3.7-1z" fill="#FF5A3C"/></svg><div>Care<em>Connect</em><small>Приложение курьера</small></div></div>
+<p>Войдите, чтобы видеть заказы и отмечать доставку.</p>
+<label>Ваше имя<input id="lName" autocomplete="name" placeholder="Например, Андрей"></label>
+<label>PIN-код<input id="lPin" type="password" inputmode="numeric" autocomplete="current-password" maxlength="8" placeholder="••••"></label>
+<div class="err" id="lErr"></div>
+<button class="btn main" type="button" id="loginBtn">Войти</button>
+<div class="hint" id="demoHint"></div>
+</div>
+</section>
+
+<!-- Приложение -->
+<div id="appView" hidden>
+<div class="top"><div class="w">
+<div class="tbar">
+<div class="who"><b id="cName"></b><span id="cDate"></span></div>
+<button class="shift" id="shiftBtn" type="button" aria-pressed="false"><span id="shiftTxt">Не на смене</span><span class="sw" aria-hidden="true"></span></button>
+<button class="ic" id="logoutBtn" type="button" aria-label="Выйти"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg></button>
+</div>
+<div class="stats">
+<div class="st"><b id="sDone">0</b><span>доставлено</span></div>
+<div class="st"><b id="sActive">0</b><span>в работе</span></div>
+<div class="st"><b id="sEarn">0</b><span id="sEarnL">заработок</span></div>
+</div>
+<div class="tabs" role="tablist">
+<button class="tab" role="tab" data-tab="new" aria-selected="true">Новые<i id="tNew"></i></button>
+<button class="tab" role="tab" data-tab="mine" aria-selected="false">Мои<i id="tMine"></i></button>
+<button class="tab" role="tab" data-tab="done" aria-selected="false">Готово</button>
+</div>
+</div></div>
+
+<main><div class="w">
+<div class="off" id="offNote">Вы не на смене. Включите «На смене», чтобы брать новые заказы.</div>
+<div class="refresh"><span id="upd"></span><button type="button" id="refreshBtn">↻ Обновить</button></div>
+<div class="list" id="list"></div>
+</div></main>
+</div>
+
+<div class="shade" id="shade"></div>
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sTitle">
+<div class="sh"><button class="x" id="closeSheet" type="button" aria-label="Назад">←</button><h2 id="sTitle"></h2><span id="sPill"></span></div>
+<div class="sb" id="sBody"></div>
+<div class="sf" id="sFoot"></div>
+</section>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ===== Настройки. Заполните перед запуском. ===== */
+var CONFIG={
+ currency:"руб. ПМР",
+ payPerOrder:25,          /* сколько курьер получает за доставленный заказ */
+ pins:{"1234":"демо"},    /* PIN-коды курьеров. ВАЖНО: на настоящем сайте проверку PIN делает сервер */
+ ordersEndpoint:"",       /* GET: список заказов (JSON-массив). Пусто = демо-режим */
+ statusEndpoint:"",       /* POST: {id, status, courier, reason} при каждом изменении статуса */
+ storePhone:"+37300000000",
+ city:"Тирасполь",
+ refreshSec:30
+};
+
+var CUR=CONFIG.currency;
+var ST={new:{t:"Новый",c:"p-new"},taken:{t:"Принят",c:"p-taken"},picked:{t:"Собран",c:"p-picked"},way:{t:"В пути",c:"p-way"},done:{t:"Доставлен",c:"p-done"},fail:{t:"Не доставлен",c:"p-fail"}};
+var FLOW=["taken","picked","way","done"];
+var $=function(i){return document.getElementById(i)};
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(m){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]})}
+function money(n){return n+" "+CUR}
+function today(){var d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()}
+function hm(ts){var d=new Date(ts);return ("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2)}
+function get(k,def){try{var v=localStorage.getItem(k);return v?JSON.parse(v):def}catch(e){return def}}
+function put(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+
+var me=get("cc_courier",null), shift=get("cc_shift",false), tab="new", openId=null, orders=[], seen=get("cc_seen",{}), local=get("cc_local",{});
+/* local — то, что этот курьер поменял: статусы, отметки товаров (хранится на телефоне) */
+
+/* ---------- Демо-заказы ---------- */
+function demoOrders(){
+ var base=Date.now(), mk=function(id,min,name,tel,addr,slot,comment,items){
+  var sub=items.reduce(function(s,i){return s+i.price*i.qty},0),del=sub>=200?0:15;
+  return {id:id,createdAt:base-min*60000,name:name,tel:tel,address:addr,slot:slot,comment:comment,items:items,delivery:del,total:sub+del,paid:true,status:"new"}};
+ return [
+  mk("1042",4,"Ирина","+373 777 12 345","ул. 25 Октября, 94, кв. 12","Как можно скорее","Домофон 12, 3 этаж",[{name:"Молоко",unit:"1 л",qty:2,price:24},{name:"Хлеб белый",unit:"500 г",qty:1,price:9},{name:"Яйца",unit:"10 шт.",qty:1,price:38},{name:"Торт «Медовик»",unit:"1 кг",qty:1,price:150}]),
+  mk("1041",11,"Сергей","+373 778 45 210","ул. Карла Либкнехта, 159, кв. 40","12:00–15:00","",[{name:"Куриное филе",unit:"1 кг",qty:1,price:78},{name:"Картофель",unit:"1 кг",qty:3,price:8},{name:"Помидоры",unit:"1 кг",qty:1,price:32}]),
+  mk("1040",17,"Наталья","+373 775 90 001","ул. Шевченко, 81/3, кв. 7","Как можно скорее","Позвонить за 10 минут",[{name:"Термометр электронный",unit:"1 шт.",qty:1,price:65},{name:"Антисептик для рук",unit:"100 мл",qty:2,price:25},{name:"Маски медицинские",unit:"10 шт.",qty:1,price:15}]),
+  mk("1039",26,"Виктор","+373 779 33 118","ул. Свердлова, 70, частный дом","15:00–18:00","Собака во дворе, звонить",[{name:"Корм для собак",unit:"1 кг",qty:3,price:58},{name:"Лакомство «Косточка»",unit:"3 шт.",qty:2,price:22}]),
+  mk("1038",38,"Ольга","+373 777 65 432","ул. Правды, 31, кв. 55","Как можно скорее","",[{name:"Тетрадь 48 листов",unit:"клетка",qty:5,price:8},{name:"Ручки шариковые синие",unit:"4 шт.",qty:2,price:12},{name:"Рюкзак школьный",unit:"1 шт.",qty:1,price:320}])
+ ];
+}
+
+/* ---------- Загрузка заказов ---------- */
+function merge(list){
+ /* заказы с магазина, оформленные на этом же устройстве (для проверки без сервера) */
+ if(!CONFIG.ordersEndpoint){
+  var shop=get("careconnect_orders",[]);
+  shop.forEach(function(o){if(!list.some(function(x){return x.id===o.id}))list.unshift(Object.assign({status:"new",paid:false},o))});
+ }
+ list.forEach(function(o){var l=local[o.id];if(l){o.status=l.status||o.status;o.courier=l.courier||o.courier;o.got=l.got||{};o.hist=l.hist||[];o.reason=l.reason;o.doneAt=l.doneAt}else{o.got={};o.hist=o.hist||[]}});
+ return list;
+}
+var demo=null;
+function load(){
+ if(CONFIG.ordersEndpoint){
+  return fetch(CONFIG.ordersEndpoint,{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(list){orders=merge(list);after()}).catch(function(){toast("Нет связи с сервером. Показаны последние данные.");after()});
+ }
+ if(!demo)demo=demoOrders();
+ orders=merge(JSON.parse(JSON.stringify(demo)));after();return Promise.resolve();
+}
+function after(){
+ var fresh=orders.filter(function(o){return o.status==="new"&&!seen[o.id]});
+ if(fresh.length&&shift&&Object.keys(seen).length){try{navigator.vibrate&&navigator.vibrate([120,60,120])}catch(e){};toast("🔔 Новых заказов: "+fresh.length)}
+ orders.forEach(function(o){seen[o.id]=1});put("cc_seen",seen);
+ $("upd").textContent="Обновлено в "+hm(Date.now())+(CONFIG.ordersEndpoint?"":" · демо-режим");
+ render();if(openId)renderSheet();
+}
+
+/* ---------- Смена статуса ---------- */
+function setStatus(o,status,reason){
+ var l=local[o.id]||(local[o.id]={got:o.got||{},hist:[]});
+ l.status=status;l.courier=me.name;l.hist=(l.hist||[]).concat([{s:status,at:Date.now()}]);
+ if(reason)l.reason=reason;
+ if(status==="done"||status==="fail")l.doneAt=Date.now(),l.day=today();
+ put("cc_local",local);
+ o.status=status;o.courier=me.name;o.hist=l.hist;o.reason=l.reason;o.doneAt=l.doneAt;
+ if(CONFIG.statusEndpoint){
+  fetch(CONFIG.statusEndpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:o.id,status:status,courier:me.name,reason:reason||"",at:new Date().toISOString()})})
+   .catch(function(){toast("Статус сохранён на телефоне, но не отправлен. Проверьте интернет.")});
+ }
+ render();renderSheet();
+}
+
+/* ---------- Отрисовка ---------- */
+function mineActive(o){return o.courier===me.name&&["taken","picked","way"].indexOf(o.status)>-1}
+function itemsCount(o){return o.items.reduce(function(s,i){return s+i.qty},0)}
+function card(o){
+ var s=ST[o.status]||ST.new;
+ return '<button class="oc'+(o.status==="new"?" new":"")+'" type="button" data-open="'+esc(o.id)+'">'
+  +'<div class="oh"><span class="num">№ '+esc(o.id)+'</span><span class="pill '+s.c+'">'+s.t+'</span></div>'
+  +'<div class="addr">'+esc(o.address)+'</div>'
+  +'<div class="meta"><span>🕒 <b>'+esc(o.slot||"Как можно скорее")+'</b></span><span>📦 '+itemsCount(o)+' шт.</span><span>💳 <b>'+money(o.total)+'</b></span><span>оформлен '+hm(o.createdAt)+'</span></div>'
+  +(o.comment?'<div class="meta">💬 '+esc(o.comment)+'</div>':'')
+  +'</button>';
+}
+function render(){
+ var nw=orders.filter(function(o){return o.status==="new"}),
+     mine=orders.filter(mineActive),
+     done=orders.filter(function(o){return o.courier===me.name&&(o.status==="done"||o.status==="fail")});
+ var doneToday=done.filter(function(o){return o.status==="done"&&local[o.id]&&local[o.id].day===today()});
+ $("sDone").textContent=doneToday.length;$("sActive").textContent=mine.length;
+ $("sEarn").textContent=doneToday.length*CONFIG.payPerOrder;$("sEarnL").textContent="заработок, "+CUR.split(" ")[0];
+ $("tNew").textContent=nw.length||"";$("tMine").textContent=mine.length||"";
+ $("offNote").hidden=shift;
+ document.querySelectorAll(".tab").forEach(function(t){t.setAttribute("aria-selected",String(t.dataset.tab===tab))});
+ var list=tab==="new"?nw:tab==="mine"?mine:done.sort(function(a,b){return (b.doneAt||0)-(a.doneAt||0)});
+ var emp={new:["🎉","Новых заказов нет. Мы покажем их здесь."],mine:["🛵","У вас нет заказов в работе. Возьмите заказ во вкладке «Новые»."],done:["📋","Здесь появятся доставленные вами заказы."]}[tab];
+ $("list").innerHTML=list.length?list.map(card).join(""):'<div class="empty"><b>'+emp[0]+'</b>'+emp[1]+'</div>';
+}
+function mapUrl(a){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(a+", "+CONFIG.city)}
+function renderSheet(){
+ var o=orders.filter(function(x){return x.id===openId})[0];
+ if(!o){closeSheet();return}
+ var s=ST[o.status]||ST.new, idx=FLOW.indexOf(o.status), mine=o.courier===me.name;
+ $("sTitle").textContent="Заказ № "+o.id;
+ $("sPill").innerHTML='<span class="pill '+s.c+'">'+s.t+'</span>';
+ var got=o.got||{}, gotN=o.items.filter(function(_,i){return got[i]}).length;
+ var sub=o.items.reduce(function(a,i){return a+i.price*i.qty},0);
+ var h='';
+ if(o.status!=="new"&&o.status!=="fail"){
+  h+='<div class="box"><div class="steps">'+FLOW.map(function(f,i){return '<span class="'+(i<=idx?"on":"")+'"></span>'}).join("")+'</div><div class="stepl"><span>Принят</span><span>Собран</span><span>В пути</span><span>Доставлен</span></div></div>';
+ }
+ h+='<div class="box"><h3>Клиент</h3><div class="addr">'+esc(o.address)+'</div><div class="meta" style="margin-top:6px"><span>👤 <b>'+esc(o.name)+'</b></span><span>📞 '+esc(o.tel)+'</span><span>🕒 <b>'+esc(o.slot||"Как можно скорее")+'</b></span></div>'
+  +(o.comment?'<div class="note" style="margin-top:10px">💬 '+esc(o.comment)+'</div>':'')
+  +(o.status==="new"?'':'<div class="row2"><a class="btn line" href="tel:'+esc(String(o.tel).replace(/[^\d+]/g,""))+'">📞 Позвонить</a><a class="btn line" href="'+mapUrl(o.address)+'" target="_blank" rel="noopener">🗺️ Маршрут</a></div>')
+  +'</div>';
+ h+='<div class="paid '+(o.paid?'y':'n')+'">'+(o.paid?'✅ Оплачено картой. Деньги брать не нужно.':'⏳ Оплата картой ещё не подтверждена. Уточните у магазина перед выдачей.')+'</div>';
+ h+='<div class="box"><h3>Товары · собрано '+gotN+' из '+o.items.length+'</h3>'
+  +o.items.map(function(it,i){var c=!!got[i];return '<label class="it'+(c?' got':'')+'"><input type="checkbox" data-got="'+i+'"'+(c?' checked':'')+(mine&&(o.status==="taken"||o.status==="picked")?'':' disabled')+'><span>'+esc(it.name)+' <small>'+esc(it.unit||"")+'</small></span><b>× '+it.qty+'</b></label>'}).join("")
+  +'<div style="margin-top:8px"><div class="sum"><span>Товары</span><span>'+money(sub)+'</span></div><div class="sum"><span>Доставка</span><span>'+(o.delivery?money(o.delivery):"бесплатно")+'</span></div><div class="sum big"><span>Итого</span><span>'+money(o.total)+'</span></div></div></div>';
+ if(o.status==="fail"&&o.reason)h+='<div class="note">❌ Причина: '+esc(o.reason)+'</div>';
+ if(o.hist&&o.hist.length)h+='<div class="box"><h3>История</h3><div class="hist">'+o.hist.map(function(x){return '<span>'+hm(x.at)+' — '+ST[x.s].t+'</span>'}).join("")+'</div></div>';
+ h+='<div class="box"><h3>Помощь</h3><a class="btn ghost" href="tel:'+esc(CONFIG.storePhone)+'">Позвонить в магазин</a></div>';
+ $("sBody").innerHTML=h;
+ var f='';
+ if(o.status==="new")f=shift?'<button class="btn acc" type="button" data-act="taken">Взять заказ</button>':'<button class="btn ghost" type="button" data-act="shift">Сначала начните смену</button>';
+ else if(mine&&o.status==="taken")f='<button class="btn main" type="button" data-act="picked"'+(gotN<o.items.length?' disabled':'')+'>Заказ собран'+(gotN<o.items.length?' · отметьте все товары':'')+'</button><button class="btn line" type="button" data-act="release">Отказаться от заказа</button>';
+ else if(mine&&o.status==="picked")f='<button class="btn main" type="button" data-act="way">🛵 Выехал к клиенту</button>';
+ else if(mine&&o.status==="way")f='<button class="btn ok" type="button" data-act="done">✅ Доставлено</button><button class="btn bad" type="button" data-act="fail">Не удалось доставить</button>';
+ else if(!mine&&o.status!=="new")f='<div class="hint" style="margin:0">Заказ ведёт другой курьер: '+esc(o.courier||"")+'</div>';
+ $("sFoot").innerHTML=f;$("sFoot").hidden=!f;
+}
+
+/* ---------- Окно заказа ---------- */
+function openSheet(id){openId=id;renderSheet();document.body.classList.add("lock");$("sBody").scrollTop=0;$("closeSheet").focus({preventScroll:true})}
+function closeSheet(){openId=null;document.body.classList.remove("lock")}
+function failDialog(o){
+ $("sFoot").innerHTML='<label style="margin:0">Почему не удалось доставить?<select id="fr"><option>Клиент не отвечает на звонки</option><option>Никого нет дома</option><option>Неверный адрес</option><option>Клиент отказался от заказа</option><option>Другое</option></select></label><textarea id="frc" rows="2" placeholder="Комментарий (необязательно)"></textarea><button class="btn bad" type="button" data-act="failok">Подтвердить</button><button class="btn line" type="button" data-act="back">Назад</button>';
+}
+
+/* ---------- Тост ---------- */
+var tt;function toast(m){var t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(function(){t.classList.remove("on")},2200)}
+
+/* ---------- События ---------- */
+document.addEventListener("click",function(e){
+ var b=e.target.closest&&e.target.closest("button");if(!b)return;
+ if(b.dataset.tab){tab=b.dataset.tab;render();window.scrollTo(0,0)}
+ else if(b.dataset.open){openSheet(b.dataset.open)}
+ else if(b.dataset.act){
+  var o=orders.filter(function(x){return x.id===openId})[0];if(!o)return;
+  var a=b.dataset.act;
+  if(a==="shift"){toggleShift()}
+  else if(a==="taken"){
+   if(o.status!=="new"){toast("Этот заказ уже взял другой курьер");return}
+   setStatus(o,"taken");toast("Заказ № "+o.id+" ваш. Соберите товары.");tab="mine";render();
+  }
+  else if(a==="picked"){setStatus(o,"picked");toast("Отлично! Можно выезжать.")}
+  else if(a==="way"){setStatus(o,"way");toast("Хорошей дороги! Клиент: "+o.tel)}
+  else if(a==="done"){setStatus(o,"done");toast("✅ Заказ № "+o.id+" доставлен. +"+money(CONFIG.payPerOrder));setTimeout(closeSheet,600)}
+  else if(a==="fail"){failDialog(o)}
+  else if(a==="back"){renderSheet()}
+  else if(a==="failok"){var r=$("fr").value+($("frc").value.trim()?": "+$("frc").value.trim():"");setStatus(o,"fail",r);toast("Отмечено. Магазин свяжется с клиентом.");setTimeout(closeSheet,600)}
+  else if(a==="release"){
+   var l=local[o.id];if(l){l.status="new";l.courier=null;l.got={};l.hist=(l.hist||[]).concat([{s:"new",at:Date.now()}]);put("cc_local",local)}
+   o.status="new";o.courier=null;o.got={};
+   if(CONFIG.statusEndpoint)fetch(CONFIG.statusEndpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:o.id,status:"new",courier:me.name,reason:"курьер отказался"})}).catch(function(){});
+   toast("Заказ вернулся в «Новые»");closeSheet();render();
+  }
+ }
+});
+document.addEventListener("change",function(e){
+ var c=e.target;if(c.dataset.got==null)return;
+ var o=orders.filter(function(x){return x.id===openId})[0];if(!o)return;
+ var l=local[o.id]||(local[o.id]={status:o.status,courier:o.courier,hist:o.hist||[]});
+ l.got=l.got||{};if(c.checked)l.got[c.dataset.got]=1;else delete l.got[c.dataset.got];
+ o.got=l.got;put("cc_local",local);
+ var y=$("sBody").scrollTop;renderSheet();$("sBody").scrollTop=y;
+});
+$("closeSheet").onclick=closeSheet;$("shade").onclick=closeSheet;
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&openId)closeSheet()});
+$("refreshBtn").onclick=function(){load().then(function(){toast("Список обновлён")})};
+function toggleShift(){
+ shift=!shift;put("cc_shift",shift);
+ $("shiftBtn").classList.toggle("on",shift);$("shiftBtn").setAttribute("aria-pressed",String(shift));
+ $("shiftTxt").textContent=shift?"На смене":"Не на смене";
+ toast(shift?"Смена начата. Хорошей работы!":"Смена завершена");
+ render();if(openId)renderSheet();
+}
+$("shiftBtn").onclick=toggleShift;
+$("logoutBtn").onclick=function(){
+ if(orders.some(mineActive)){toast("Сначала завершите заказы в работе");return}
+ me=null;put("cc_courier",null);shift=false;put("cc_shift",false);showLogin();
+};
+/* обновление, если магазин оформил заказ в другой вкладке */
+window.addEventListener("storage",function(e){if(e.key==="careconnect_orders")load()});
+
+/* ---------- Вход ---------- */
+function doLogin(){
+ var n=$("lName").value.trim(),p=$("lPin").value.replace(/\D/g,"");
+ if(n.length<2){$("lErr").textContent="Введите имя.";return}
+ if(!CONFIG.pins[p]){$("lErr").textContent="Неверный PIN-код.";$("lPin").value="";return}
+ me={name:n};put("cc_courier",me);$("lErr").textContent="";$("lPin").value="";showApp();
+}
+$("loginBtn").addEventListener("click",doLogin);
+["lName","lPin"].forEach(function(i){$(i).addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();doLogin()}})});
+if(CONFIG.pins["1234"])$("demoHint").textContent="Демо-доступ: PIN 1234";
+function showLogin(){$("appView").hidden=true;$("loginView").hidden=false}
+var timer;
+function showApp(){
+ $("loginView").hidden=true;$("appView").hidden=false;
+ $("cName").textContent=me.name;
+ $("cDate").textContent=new Date().toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"});
+ $("shiftBtn").classList.toggle("on",shift);$("shiftBtn").setAttribute("aria-pressed",String(shift));$("shiftTxt").textContent=shift?"На смене":"Не на смене";
+ load();clearInterval(timer);timer=setInterval(function(){if(!document.hidden)load()},CONFIG.refreshSec*1000);
+}
+if(me)showApp();else showLogin();
+</script>
+</body>
+</html>
