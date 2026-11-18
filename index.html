@@ -12,7 +12,7 @@
 <style>
 :root{--bg:#F4F7F6;--card:#fff;--ink:#11201F;--mut:#5C6D6B;--line:#DFE7E5;--main:#0B5D5B;--main2:#0F7471;--acc:#FF5A3C;--acc2:#E8472A;--tile:#EDF4F2;--soft:#E4F2EF;--gut:20px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth;scroll-padding-top:140px;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--hh,69px) + 70px);-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Manrope,system-ui,sans-serif;overflow-x:hidden}
 body.open{overflow:hidden}
 button,input,textarea,select{font:inherit;color:inherit}
@@ -30,7 +30,16 @@ header{position:sticky;top:0;z-index:20;background:rgba(244,247,246,.95);-webkit
 nav{display:flex;gap:24px;margin-right:12px}
 nav a{text-decoration:none;font-weight:600;color:var(--mut)}
 nav a:hover{color:var(--ink)}
-.tel{display:flex;align-items:center;gap:8px;text-decoration:none;font-weight:700;color:var(--main);min-height:44px;padding:0 4px}
+.callpill{display:flex;align-items:center;gap:10px;text-decoration:none;background:#FFF1EC;border:1.5px solid #FFC9B9;border-radius:999px;padding:4px 16px 4px 5px;min-height:48px;color:var(--ink)}
+.callpill:hover{border-color:var(--acc)}
+.callpill small{display:block;font-size:12px;font-weight:700;color:var(--acc2);line-height:1.1}
+.callpill b{display:block;font-size:15px;line-height:1.2;white-space:nowrap}
+.ring{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--acc);font-size:18px;flex:none;animation:ring 3s ease-in-out infinite}
+@keyframes ring{0%,80%,100%{transform:rotate(0)}84%{transform:rotate(-14deg)}88%{transform:rotate(14deg)}92%{transform:rotate(-8deg)}96%{transform:rotate(8deg)}}
+.callbar{display:none}
+.phonebox{background:#FFF1EC;border:1px solid #FFD3C7;border-radius:14px;padding:12px 14px;font-size:14px;display:grid;gap:8px}
+.phonebox b{font-size:15px}
+.phonebox a{display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;border:1.5px solid var(--acc);color:var(--acc2);text-decoration:none;border-radius:12px;min-height:46px;font-weight:800}
 .cartbtn{display:flex;align-items:center;gap:10px;background:var(--main);color:#fff;border:0;border-radius:999px;padding:0 18px;min-height:44px;font-weight:700}
 .cartbtn b{background:var(--acc);border-radius:999px;min-width:24px;height:24px;display:grid;place-items:center;font-size:13px;padding:0 6px}
 .cartbtn.bump b{animation:bump .35s}
@@ -102,7 +111,7 @@ h2{font-size:clamp(26px,3.6vw,36px);letter-spacing:-.035em;line-height:1.1;margi
 .set button{margin-top:auto;background:#fff;color:var(--ink);border:0;border-radius:12px;min-height:44px;font-weight:800}
 
 /* catalog */
-.catbar{position:sticky;top:calc(69px + env(safe-area-inset-top));z-index:15;background:var(--bg);padding:10px 0;margin-bottom:10px}
+.catbar{position:sticky;top:var(--hh,69px);z-index:15;background:var(--bg);padding:10px 0;margin-bottom:10px}
 .chips{display:flex;gap:8px;flex-wrap:wrap}
 .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:0 16px;min-height:44px;font-weight:600;flex:none;white-space:nowrap}
 .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
@@ -204,15 +213,19 @@ textarea{min-height:72px;resize:vertical}
 @media (max-width:1000px){.cats{grid-template-columns:repeat(4,1fr)}.sets{grid-template-columns:1fr 1fr}}
 @media (max-width:820px){
  :root{--gut:16px}
- html{scroll-padding-top:124px}
+ html{scroll-padding-top:calc(var(--hh,61px) + 64px)}
  body.has-bar{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
  .strip{font-size:13px;padding:6px 10px}
  .bar{height:60px;gap:8px}
  .logo{font-size:20px}
  .logo svg{width:36px;height:36px}
  nav{display:none}
- .tel span{display:none}
- .tel{background:var(--tile);border-radius:50%;width:44px;justify-content:center;padding:0}
+ .callpill{display:none}
+ .callbar{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;background:var(--acc);padding:6px var(--gut);min-height:46px;font-size:14px;line-height:1.25}
+ .callbar .ring{width:32px;height:32px;font-size:16px;background:rgba(255,255,255,.2)}
+ .callbar .cb-t{flex:1;min-width:0}
+ .callbar b{white-space:nowrap}
+ .cb-go{background:#fff;color:var(--acc2);font-weight:800;border-radius:10px;padding:6px 12px;white-space:nowrap}
  .cartbtn{padding:0 14px}
  .hero{grid-template-columns:1fr;padding:30px 20px;border-radius:26px;margin-top:14px}
  .hero p{font-size:16px;margin-bottom:20px}
@@ -229,7 +242,7 @@ textarea{min-height:72px;resize:vertical}
  .sets::-webkit-scrollbar{display:none}
  .set{flex:none;width:78%;scroll-snap-align:start;min-height:180px}
  .steps{grid-template-columns:1fr}
- .catbar{top:calc(61px + env(safe-area-inset-top));padding:8px 0}
+ .catbar{padding:8px 0}
  .chips{flex-wrap:nowrap;overflow-x:auto;margin:0 calc(var(--gut) * -1);padding:0 var(--gut);scrollbar-width:none}
  .chips::-webkit-scrollbar{display:none}
  .grid{grid-template-columns:1fr 1fr;gap:10px}
@@ -260,9 +273,11 @@ textarea{min-height:72px;resize:vertical}
 <header><div class="w bar">
 <a class="logo" href="#top" aria-label="CareConnect — на главную"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="12" fill="#0B5D5B"/><path d="M13 17.5c0-5.2 3.1-8.5 7-8.5s7 3.3 7 8.5" fill="none" stroke="#9FF0DF" stroke-width="2.6" stroke-linecap="round"/><path d="M9.5 19h21l-2.4 10.6a2.4 2.4 0 0 1-2.3 1.9H14.2a2.4 2.4 0 0 1-2.3-1.9z" fill="#fff"/><rect x="7.5" y="16" width="25" height="4.4" rx="2.2" fill="#FF5A3C"/><path d="M20 23.6c-1.2-1.5-3.7-1-3.7 1 0 1.8 3.7 4 3.7 4s3.7-2.2 3.7-4c0-2-2.5-2.5-3.7-1z" fill="#FF5A3C"/></svg><span>Care<em>Connect</em></span></a>
 <nav aria-label="Основное меню"><a href="#catalog">Каталог</a><a href="#sets">Наборы</a><a href="#how">Как заказать</a><a href="#faq">Вопросы</a></nav>
-<a class="tel" id="telTop" href="#"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8.1 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span class="phoneText"></span></a>
+<a class="callpill" id="telTop" href="#"><span class="ring" aria-hidden="true">📞</span><span><small>Заказ по телефону</small><b class="phoneText"></b></span></a>
 <button class="cartbtn" id="openCart" type="button" aria-label="Открыть корзину">Корзина <b id="cnt">0</b></button>
-</div></header>
+</div>
+<a class="callbar" id="callBar" href="#"><span class="ring" aria-hidden="true">📞</span><span class="cb-t">Закажите по телефону: <b class="phoneText"></b></span><span class="cb-go">Позвонить</span></a>
+</header>
 
 <main id="top">
 <div class="w">
@@ -321,6 +336,7 @@ textarea{min-height:72px;resize:vertical}
 <div class="faq">
 <details><summary>Сколько стоит доставка?</summary><p id="faqShip"></p></details>
 <details><summary>Когда привезут заказ?</summary><p>Выберите интервал при оформлении. Заказы, оформленные до 18:00, обычно доставляем в тот же день.</p></details>
+<details><summary>Можно ли заказать по телефону?</summary><p id="faqPhone"></p></details>
 <details><summary>Можно ли оплатить наличными?</summary><p>Нет, мы принимаем только оплату банковской картой.</p></details>
 <details><summary>Есть ли лекарства по рецепту?</summary><p>Нет. В разделе «Аптека» только товары без рецепта: перевязка, гигиена, витамины, термометры.</p></details>
 <details><summary>Что если товара не окажется в наличии?</summary><p>Мы позвоним перед доставкой и предложим замену или уберём товар из заказа.</p></details>
@@ -599,11 +615,14 @@ function save(){try{localStorage.setItem("careconnect_cart",JSON.stringify(cart)
 /* Контакты из настроек */
 document.querySelectorAll(".phoneText").forEach(function(el){el.textContent=CONFIG.phone});
 document.querySelectorAll(".phoneLink").forEach(function(el){el.href="tel:"+CONFIG.phoneHref});
-$("telTop").href="tel:"+CONFIG.phoneHref;$("telTop").setAttribute("aria-label","Позвонить "+CONFIG.phone);
+["telTop","callBar"].forEach(function(i){$(i).href="tel:"+CONFIG.phoneHref;$(i).setAttribute("aria-label","Заказать по телефону "+CONFIG.phone)});
+function setHH(){document.documentElement.style.setProperty("--hh",document.querySelector("header").offsetHeight+"px")}
+setHH();window.addEventListener("resize",setHH);window.addEventListener("load",setHH);
 $("mail").href="mailto:"+CONFIG.email;$("mail").textContent=CONFIG.email;
 $("freeF").textContent="от "+money(FREE);
 $("strip").innerHTML="🎁 Бесплатная доставка при заказе <b>от "+esc(money(FREE))+"</b>";
 document.querySelectorAll("[data-i]").forEach(function(el){el.innerHTML=pic(el.dataset.i)});
+$("faqPhone").textContent="Да. Позвоните "+CONFIG.phone+", назовите нужные товары и адрес, и оператор оформит заказ. Кнопка звонка всегда закреплена вверху страницы.";
 $("faqShip").textContent="Доставка по Тирасполю стоит "+money(SHIP)+". При заказе от "+money(FREE)+" доставка бесплатная.";
 
 /* Тост */
@@ -672,7 +691,7 @@ function renderCart(){
  if(done){
   h='<div class="done"><i aria-hidden="true">✓</i><h3>Заказ № '+esc(done.id)+' оформлен</h3><p>'+esc(done.name)+', осталось оплатить заказ банковской картой. Сумма: '+money(done.total)+'. После оплаты мы позвоним на '+esc(done.tel)+' и подтвердим доставку.</p><button class="go" type="button" id="payBtn">Оплатить картой</button><p id="payNote" hidden style="margin-top:14px;font-size:14px">Ссылку для оплаты картой пришлём на ваш номер.</p><button class="chip" type="button" id="doneBtn" style="margin-top:12px">Вернуться в каталог</button></div>';
  }else if(!n){
-  h='<div class="empty">В корзине пока пусто. Добавьте товары из каталога или возьмите готовый набор.</div>';
+  h='<div class="empty">В корзине пока пусто. Добавьте товары из каталога или возьмите готовый набор.<br><br>Или закажите по телефону: <a href="tel:'+esc(CONFIG.phoneHref)+'"><b>'+esc(CONFIG.phone)+'</b></a></div>';
  }else{
   var s=sub(),pct=Math.min(100,Math.round(s/FREE*100));
   h=lines().map(function(p){return '<div class="line"><span class="th" style="--tbg:'+(BG[p.c]||'#EDF4F2')+'">'+pic(p.i)+'</span><span class="nm">'+esc(p.n)+'</span><span class="sm">'+esc(p.u)+' · '+money(p.p*cart[p.id])+'</span>'+stepper(p)+'</div>'}).join("")
@@ -687,7 +706,8 @@ function renderCart(){
   +'<label>Время доставки<select id="fs"><option>Как можно скорее</option><option>09:00–12:00</option><option>12:00–15:00</option><option>15:00–18:00</option><option>18:00–21:00</option></select></label>'
   +'<label>Комментарий<textarea id="fc" placeholder="Подъезд, этаж, домофон"></textarea></label>'
   +'<div class="pay"><b>Оплата</b><span>Только банковской картой. После оформления вы перейдёте к оплате.</span></div>'
-  +'<span class="err" id="es"></span><button class="go" id="submitBtn" type="button">Перейти к оплате · '+money(s+ship())+'</button></div>';
+  +'<span class="err" id="es"></span><button class="go" id="submitBtn" type="button">Перейти к оплате · '+money(s+ship())+'</button>'
+  +'<div class="phonebox"><b>📞 Удобнее заказать по телефону?</b><span>Позвоните <b>'+esc(CONFIG.phone)+'</b> и назовите товары из списка выше. Оператор оформит этот заказ за вас.</span><a href="tel:'+esc(CONFIG.phoneHref)+'">Позвонить и заказать</a></div></div>';
  }
  /* сохраняем введённые данные и фокус только внутри корзины */
  var a=document.activeElement,keep=a&&$("db").contains(a)&&a.id,vals={};
